@@ -103,9 +103,19 @@ func (l *Lambda) Beta(b Abstracao) {
 	vari := l.Vars[0]
 	l.Vars = l.Vars[1:]
 	for k, v := range l.Func {
-		if v.Tipo() == VARIAVEL && v.Comparar(vari) {
+		valor, ok := v.(Variavel)
+		if ok && valor.Var == vari {
 			l.Func[k] = b
 		}
+		// switch valor := v.(type) {
+		// case Variavel:
+		// 	if valor.Var == vari {
+		// 		l.Func[k] = b
+		// 	}
+		// }
+		// if v.Tipo() == VARIAVEL && v.Comparar(vari) {
+		// 	l.Func[k] = b
+		// }
 	}
 	l.RetirarCamada()
 }
@@ -124,8 +134,8 @@ func (l Lambda) Interior() Lambda {
 
 func main() {
 	f1 := Lambda{Vars: Variaveis{'a'}, Func: []Abstracao{Variavel{'a'}}}
-	f2 := Lambda{Vars: Variaveis{'b'}, Func: []Abstracao{Variavel{'b'}}}
 	f1.Printar()
+	f2 := Lambda{Vars: Variaveis{'b'}, Func: []Abstracao{Variavel{'b'}}}
 	f1.Beta(f2)
 	f1.Printar()
 	f1.Beta(Numero{1})
